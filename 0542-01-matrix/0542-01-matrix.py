@@ -1,29 +1,30 @@
 class Solution:
     def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
-        def isvalid(row, col):
+        q,visited=deque(),set()
+        dirs=[(1,0),(0,1),(-1,0),(0,-1)]
+        level=1
+        
+        def isValid(row, col):
             if row >= len(mat) or row < 0 or col >= len(mat[0]) or col < 0:
                 return False
             return True
         
-        # get every zero and add them to a queue
-        q, visited = deque(), set()
-        for row in range( len(mat)):
-            for col in range( len(mat[0])):
-                if mat[row][col] == 0:
-                    q.append([row, col])
-                    visited.add((row, col))
         
-        level = 1 # the distance to the nearest zero starts from 1
+        for i,j in product(range(len(mat)),(range(len(mat[0])))):
+            if mat[i][j]==0:
+                q.append([i,j])
+                visited.add((i,j))
+                
         while q:
-            size = len(q)
-            for _ in range( size ):
-                row, col =q.popleft()
-                for r, c in [ [1, 0], [-1, 0], [0, 1], [0, -1]]:
-                    newRow, newCol = row + r, col + c
-                    if (newRow, newCol) not in visited and isvalid(newRow, newCol):
-                        mat[newRow][newCol] = level
-                        q.append([newRow, newCol])
-                        visited.add( (newRow, newCol))
-            level += 1
-        
+            for _ in range(len(q)):
+                r,c=q.popleft()
+                for m,n in dirs:
+                    newR,newC=r+m,c+n
+                    if (newR,newC) not in visited and isValid(newR,newC):
+                        visited.add((newR,newC))
+                        q.append((newR,newC))
+                        mat[newR][newC]=level
+                        
+            level+=1
+            
         return mat
