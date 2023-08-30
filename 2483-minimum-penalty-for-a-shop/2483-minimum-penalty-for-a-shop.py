@@ -8,12 +8,8 @@ class Solution:
         for c in customers:
             if c=='Y':
                 y_count+=1
-        if y_count==n:
-            return n
-        elif y_count==0:
-            return 0
-        penalty=y_count
         
+        penalty=y_count
         
         for i in range(n):
             c=customers[i]
