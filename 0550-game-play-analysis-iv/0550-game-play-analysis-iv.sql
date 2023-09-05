@@ -1,10 +1,10 @@
 SELECT
-	ROUND(SUM(login)/COUNT(DISTINCT player_id), 2) AS fraction
+	ROUND((SUM(t.login)/COUNT(DISTINCT t.player_id)),2) AS fraction
 FROM
 	(
 		SELECT
-			player_id,
-			DATEDIFF(event_date, MIN(event_date) OVER(PARTITION BY player_id)) = 1 AS login
+			Activity.player_id,
+			DATEDIFF(Activity.event_date,MIN(Activity.event_date) OVER (PARTITION BY Activity.player_id)) =1 AS login
 		FROM
 			Activity
 	)
